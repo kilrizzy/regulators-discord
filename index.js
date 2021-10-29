@@ -8,18 +8,36 @@ let giphy = GiphyAPIClient(giphy_api_key);
 let availableGifs = [];
 let totalResponses = 0;
 
+let regulateDes = "**regulate:** Prints a Leslie Nielsen Gif";
+let croDes = "**cro:** Ask the bot a question";
+let fundsDes = "**funds:** Prints current shared Regulator funds";
+let setFundsDes = "**setfunds:** Sets current funds in gold only, ex: !setfunds 1337";
+let helpDes = "**helpme:** prints this..duh";
+
 let regulators = [
-    'Billybar',
+    'Broz',
     'Shmendrick',
     'Adolin',
-    'Hankin',
+    'Liam',
     'Blitz',
     'Anomander',
-    'Hankin'
+    'Crawford'
 ];
+
+module.exports = {
+    name: "help",
+    aliases: ["h"],
+    category: "info",
+    description: "Returns all commands or one specific command info",
+    usuage: "[command | alias]",
+    run: async (client, message, args) => {
+
+    }
+}
 
 client.once('ready', () => {
     console.log('Ready!');
+    client.user.setActivity("What is a man's life worth?");
     giphy.search('gifs',{"q": "leslie nielsen"}).then((response) => {
         availableGifs = response.data;
         totalResponses = availableGifs.length;
@@ -62,9 +80,10 @@ client.on('message', message => {
         let response = responses[Math.floor(Math.random()*responses.length)];
         let regulator = regulators[Math.floor(Math.random()*regulators.length)];
         response = response.replace('[r]',regulator);
+
         message.channel.send(response);
     }
-    if (message.content.startsWith(`${prefix}help`)) {
+    if (message.content.startsWith(`${prefix}helpme`)) {
         runHelp(message);
     }
 });
@@ -111,7 +130,9 @@ function runSetFunds(message, newFunds){
     }
 }
 
+
 function runHelp(message){
 
-    message.channel.send('I was too lazy to do this');
+    message.channel.send(`${regulateDes} \n${croDes} \n${fundsDes} \n${setFundsDes} \n${helpDes} \n`);
 }
+
